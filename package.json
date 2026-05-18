@@ -9,6 +9,8 @@
     "web:dev": "npm --workspace @signalforge/web run dev",
     "web:build": "npm --workspace @signalforge/web run build",
     "web:typecheck": "npm --workspace @signalforge/web run typecheck"
+  },
+  "devDependencies": {
+    "shadcn": "^4.7.0"
   }
 }
-
