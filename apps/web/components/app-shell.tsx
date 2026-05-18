@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { useState } from "react";
 import {
   Activity,
   Bell,
@@ -13,6 +16,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { ingestEvent } from "@/lib/api";
 
 const nav = [
   { href: "/", label: "Overview", icon: Gauge },
@@ -23,6 +27,23 @@ const nav = [
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const [sending, setSending] = useState(false);
+
+  async function sendNotifyTest() {
+    setSending(true);
+    try {
+      await ingestEvent({
+        source: "topbar",
+        service: "payments",
+        severity: "critical",
+        message: "Manual notification test from UI",
+        attributes: { action: "notify_test" },
+      });
+    } finally {
+      setSending(false);
+    }
+  }
+
   return (
     <div className="shell">
       <aside className="sidebar">
@@ -64,16 +85,22 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span>Redpanda / Postgres / Redis</span>
           </div>
           <div className="topbar-actions">
-            <Button variant="ghost" size="icon" aria-label="Search">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Search"
+              onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "/" }))}
+              type="button"
+            >
               <Search size={17} aria-hidden />
             </Button>
-            <Button variant="secondary" type="button">
+            <Button variant="secondary" onClick={() => window.location.assign("/events")} type="button">
               <Radio size={16} aria-hidden />
               Stream
             </Button>
-            <Button type="button">
+            <Button onClick={sendNotifyTest} disabled={sending} type="button">
             <Bell size={16} aria-hidden />
-            Notify test
+            {sending ? "Sending" : "Notify test"}
             </Button>
           </div>
         </div>

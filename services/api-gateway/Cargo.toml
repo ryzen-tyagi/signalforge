@@ -8,6 +8,7 @@ rust-version.workspace = true
 anyhow.workspace = true
 axum.workspace = true
 chrono.workspace = true
+serde.workspace = true
 serde_json.workspace = true
 signalforge-common = { path = "../../crates/common" }
 signalforge-telemetry = { path = "../../crates/telemetry" }

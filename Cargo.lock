@@ -39,6 +39,7 @@ dependencies = [
  "anyhow",
  "axum",
  "chrono",
+ "serde",
  "serde_json",
  "signalforge-common",
  "signalforge-telemetry",
@@ -2334,6 +2335,7 @@ dependencies = [
  "futures-core",
  "pin-project-lite",
  "tokio",
+ "tokio-util",
 ]
 
 [[package]]

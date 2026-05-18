@@ -1,11 +1,14 @@
+"use client";
+
 import { AppShell } from "@/components/app-shell";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { events, incidents } from "@/lib/demo-data";
+import { useLiveData } from "@/lib/use-live-data";
 
 export default function ServiceDetailPage({ params }: { params: { id: string } }) {
-  const serviceEvents = events.filter((event) => event.service === params.id);
-  const serviceIncidents = incidents.filter((incident) => incident.service === params.id);
+  const live = useLiveData();
+  const serviceEvents = live.events.filter((event) => event.service === params.id);
+  const serviceIncidents = live.incidents.filter((incident) => incident.service === params.id);
 
   return (
     <AppShell>

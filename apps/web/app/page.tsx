@@ -1,10 +1,17 @@
+"use client";
+
 import { AppShell } from "@/components/app-shell";
 import { DataTable } from "@/components/data-table";
+import { SeverityBadge } from "@/components/severity-badge";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { events, incidents, metrics } from "@/lib/demo-data";
+import { useLiveData } from "@/lib/use-live-data";
 
 export default function OverviewPage() {
+  const live = useLiveData();
+  const activeIncidents = live.incidents.filter((incident) => incident.status !== "resolved");
+
   return (
     <AppShell>
       <div className="page-heading">
@@ -12,10 +19,16 @@ export default function OverviewPage() {
           <h2 className="page-title">Overview</h2>
           <p className="page-kicker">Realtime service health, live ingest, and active response work.</p>
         </div>
-        <Badge variant="success">all systems ingesting</Badge>
+        <div className="topbar-actions">
+          <Badge variant={live.streamState === "live" ? "success" : "warning"}>
+            {live.streamState}
+          </Badge>
+          <Button variant="secondary" onClick={live.refresh} type="button">Refresh</Button>
+        </div>
       </div>
+      {live.error ? <p className="page-kicker critical">{live.error}</p> : null}
       <section className="grid metrics" style={{ marginTop: 14 }}>
-        {metrics.map((metric) => (
+        {live.metrics.map((metric) => (
           <Card key={metric.label}>
             <CardContent>
               <span className="metric-label">{metric.label}</span>
@@ -35,11 +48,11 @@ export default function OverviewPage() {
           </CardHeader>
           <CardContent>
           <DataTable
-            rows={events}
+            rows={live.events.slice(0, 8)}
             columns={[
-              { key: "time", label: "Time" },
+              { key: "received_at", label: "Time", render: (row) => live.formatTime(row.received_at) },
               { key: "service", label: "Service" },
-              { key: "severity", label: "Severity", render: (row) => <Badge variant={row.severity === "critical" ? "critical" : row.severity === "warning" ? "warning" : "info"}>{row.severity}</Badge> },
+              { key: "severity", label: "Severity", render: (row) => <SeverityBadge severity={row.severity} /> },
               { key: "message", label: "Message" },
             ]}
           />
@@ -52,7 +65,7 @@ export default function OverviewPage() {
           </CardHeader>
           <CardContent>
           <DataTable
-            rows={incidents.filter((incident) => incident.status !== "resolved")}
+            rows={activeIncidents}
             columns={[
               { key: "id", label: "ID" },
               { key: "service", label: "Service" },
