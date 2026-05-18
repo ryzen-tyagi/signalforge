@@ -1,0 +1,14 @@
+{
+  "name": "signalforge",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/web"
+  ],
+  "scripts": {
+    "web:dev": "npm --workspace @signalforge/web run dev",
+    "web:build": "npm --workspace @signalforge/web run build",
+    "web:typecheck": "npm --workspace @signalforge/web run typecheck"
+  }
+}
+

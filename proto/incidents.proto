@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package signalforge.incidents.v1;
+
+service IncidentService {
+  rpc CreateIncident(CreateIncidentRequest) returns (Incident);
+  rpc UpdateIncidentStatus(UpdateIncidentStatusRequest) returns (Incident);
+}
+
+message CreateIncidentRequest {
+  string tenant_id = 1;
+  string rule_id = 2;
+  string title = 3;
+  string service = 4;
+  string severity = 5;
+}
+
+message UpdateIncidentStatusRequest {
+  string incident_id = 1;
+  string status = 2;
+}
+
+message Incident {
+  string id = 1;
+  string tenant_id = 2;
+  string title = 3;
+  string service = 4;
+  string severity = 5;
+  string status = 6;
+  string created_at = 7;
+}
+

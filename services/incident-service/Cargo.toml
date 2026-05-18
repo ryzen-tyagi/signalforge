@@ -1,0 +1,15 @@
+[package]
+name = "incident-service"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+signalforge-common = { path = "../../crates/common" }
+signalforge-telemetry = { path = "../../crates/telemetry" }
+sqlx.workspace = true
+tokio.workspace = true
+tonic.workspace = true
+tracing.workspace = true
+
