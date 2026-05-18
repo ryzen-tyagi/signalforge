@@ -1,6 +1,7 @@
 FROM rust:1.93-bookworm AS builder
 
 ARG SERVICE
+ARG FEATURES=""
 WORKDIR /app
 
 RUN apt-get update \
@@ -8,7 +9,11 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY . .
-RUN cargo build --release -p ${SERVICE}
+RUN if [ -n "${FEATURES}" ]; then \
+        cargo build --release -p ${SERVICE} --features "${FEATURES}"; \
+    else \
+        cargo build --release -p ${SERVICE}; \
+    fi
 
 FROM debian:bookworm-slim
 
@@ -19,4 +24,3 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /app/target/release/${SERVICE} /usr/local/bin/service
 CMD ["service"]
-

@@ -12,8 +12,15 @@ serde.workspace = true
 serde_json.workspace = true
 signalforge-common = { path = "../../crates/common" }
 signalforge-telemetry = { path = "../../crates/telemetry" }
+redis.workspace = true
+sqlx.workspace = true
 tokio.workspace = true
 tokio-stream.workspace = true
 tower-http.workspace = true
 tracing.workspace = true
 uuid.workspace = true
+rdkafka = { workspace = true, optional = true }
+
+[features]
+default = []
+kafka = ["dep:rdkafka"]

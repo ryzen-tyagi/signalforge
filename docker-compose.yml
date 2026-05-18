@@ -49,9 +49,13 @@ services:
       dockerfile: infra/rust-service.Dockerfile
       args:
         SERVICE: api-gateway
+        FEATURES: kafka
     env_file: .env.example
     environment:
       BIND_ADDR: 0.0.0.0:8080
+      DATABASE_URL: postgres://signalforge:signalforge@postgres:5432/signalforge
+      REDIS_URL: redis://redis:6379
+      KAFKA_BROKERS: redpanda:9092
     ports:
       - "8080:8080"
     depends_on:
@@ -77,4 +81,3 @@ services:
 
 volumes:
   postgres-data:
-

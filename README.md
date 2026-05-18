@@ -10,7 +10,12 @@ SignalForge is a portfolio-grade realtime incident and observability platform.
 
 ## Current Status
 
-This is the first implementation scaffold. API handlers return demo data, worker services subscribe to their planned Kafka topics, and persistence/gRPC internals are ready for the next pass.
+The dashboard talks to the API gateway over REST and SSE. The API gateway now prefers production backing services when available:
+
+- Postgres stores events, alert rules, and incidents.
+- Redis publishes live event fanout on `sf.events.live.v1` for SSE delivery.
+- Kafka/Redpanda publishing to `sf.events.raw.v1` is enabled in Docker builds with the `kafka` feature.
+- If Postgres or Redis are not running during local development, the gateway falls back to in-memory state so the UI still works.
 
 ## Local Notes
 
@@ -36,6 +41,14 @@ When Docker is installed:
 ```powershell
 cd D:\signalforge
 docker compose up --build
+```
+
+Local API without Docker:
+
+```powershell
+cd D:\signalforge
+$env:BIND_ADDR='127.0.0.1:8080'
+cargo run -p api-gateway
 ```
 
 ## Planned Demo Flow
