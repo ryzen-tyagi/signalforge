@@ -14,7 +14,7 @@ This is the first implementation scaffold. API handlers return demo data, worker
 
 ## Local Notes
 
-The project is pinned with `rust-toolchain.toml` to `1.93.0` because the plan requires Rust `1.93.0`. This machine currently reports `rustc 1.92.0`; running Cargo may ask `rustup` to install the pinned toolchain.
+The project is pinned with `rust-toolchain.toml` to `1.93.0` because the plan requires Rust `1.93.0`.
 
 Docker is required for the Compose stack and was not available on PATH during scaffolding.
 
@@ -45,4 +45,3 @@ docker compose up --build
 3. Submit an event to `POST /api/ingest/events`.
 4. Watch `/events` update from the SSE stream.
 5. Verify a matching rule opens an incident in `/incidents`.
-
